@@ -15,11 +15,12 @@ import distributed.filter.helper.SplitSecondPhase;
 public class WhiteSpaceFilter extends AbstractFilter<String> {
 
 	private static Logger log = Logger.getLogger( WhiteSpaceFilter.class );
-	private final int numberOfCPUs = Runtime.getRuntime().availableProcessors();
+	private int numberOfFilter;
 	private static final String WHITE_SPACE = "\\s";
 
-	public WhiteSpaceFilter(boolean split) {
+	public WhiteSpaceFilter(int numberOfFilter, boolean split) {
 		super( WHITE_SPACE, split );
+		this.numberOfFilter = numberOfFilter;
 	}
 
 	public String[] filter(String input) throws Exception {
@@ -33,23 +34,23 @@ public class WhiteSpaceFilter extends AbstractFilter<String> {
 		}
 
 		List<String> l = Collections.synchronizedList( new ArrayList<String>() );
-		final int numberOfTask = input.length() / numberOfCPUs;
-		final int leftOver = input.length() % numberOfCPUs;
+		final int numberOfTask = input.length() / numberOfFilter;
+		final int leftOver = input.length() % numberOfFilter;
 
 		if ( split ) {
 			return split( input, numberOfTask, leftOver, l );
 		}
 		else {
 			int i = 0;
-			for ( i = 0; i < numberOfCPUs; i++ ) {
+			for ( i = 0; i < numberOfFilter; i++ ) {
 				int start = i * numberOfTask;
 				int end = start + numberOfTask;
 
 				List<String> output = Collections.synchronizedList( new ArrayList<String>() );
 				l.addAll( new UnSplitLocalFilter<List<String>>( input, start, end, filterPattern, output ).call() );
 
-				if ( i == ( numberOfCPUs - 1 ) && leftOver != 0 ) {
-					if ( leftOver <= numberOfCPUs ) {
+				if ( i == ( numberOfFilter - 1 ) && leftOver != 0 ) {
+					if ( leftOver <= numberOfFilter ) {
 						int newStart = end;
 						int newEnd = newStart + leftOver;
 
@@ -76,7 +77,7 @@ public class WhiteSpaceFilter extends AbstractFilter<String> {
 		List<MatchRange> result = Collections.synchronizedList( new ArrayList<MatchRange>() );
 
 		int i = 0;
-		for ( i = 0; i < numberOfCPUs; i++ ) {
+		for ( i = 0; i < numberOfFilter; i++ ) {
 
 			int start = i * numberOfTask;
 			int end = start + numberOfTask;
@@ -84,8 +85,8 @@ public class WhiteSpaceFilter extends AbstractFilter<String> {
 			List<MatchRange> output = new ArrayList<MatchRange>();
 			result.addAll( new SplitFirstPhase<List<MatchRange>>( input, start, end, filterPattern, output ).call() );
 
-			if ( i == ( numberOfCPUs - 1 ) && leftOver != 0 ) {
-				if ( leftOver <= numberOfCPUs ) {
+			if ( i == ( numberOfFilter - 1 ) && leftOver != 0 ) {
+				if ( leftOver <= numberOfFilter ) {
 					int newStart = end;
 					int newEnd = newStart + leftOver;
 
@@ -115,16 +116,16 @@ public class WhiteSpaceFilter extends AbstractFilter<String> {
 			result = new String[ranges.size() + 1];
 			result[0] = input.substring( 0, ranges.get( 0 ).getStart() );
 
-			final int numberOfTasks = ranges.size() / numberOfCPUs;
-			final int leftOver = numberOfTasks % numberOfCPUs;
+			final int numberOfTasks = ranges.size() / numberOfFilter;
+			final int leftOver = numberOfTasks % numberOfFilter;
 			int i = 0;
-			for ( i = 1; i < numberOfCPUs; i++ ) {
+			for ( i = 1; i < numberOfFilter; i++ ) {
 				int start = i * numberOfTasks;
 				int end = start + numberOfTasks;
 
 				System.arraycopy( new SplitSecondPhase( input, start, end, ranges ).call(), 0, result, start, 1 );
-				if ( i == ( numberOfCPUs - 1 ) && leftOver != 0 ) {
-					if ( leftOver <= numberOfCPUs ) {
+				if ( i == ( numberOfFilter - 1 ) && leftOver != 0 ) {
+					if ( leftOver <= numberOfFilter ) {
 						int newStart = end;
 						int newEnd = end + leftOver;
 
