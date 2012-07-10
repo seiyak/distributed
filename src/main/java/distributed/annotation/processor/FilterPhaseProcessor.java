@@ -22,12 +22,12 @@ public class FilterPhaseProcessor extends AbstractProcessor {
 
 		FilterPhase filterPhase = (FilterPhase) an;
 
-		Object[] values = new Object[6];
+		Object[] values = new Object[5];
 		values[0] = filterPhase.numberOfFilter();
 		values[1] = filterProcessor.process( filterPhase.filters() );
-		values[3] = filterPhase.slaves();
-		values[4] = filterPhase.slaveList();
-		values[5] = filterPhase.input();
+		values[2] = filterPhase.slaves();
+		values[3] = filterPhase.slaveList();
+		values[4] = filterPhase.input();
 
 		return values;
 	}
