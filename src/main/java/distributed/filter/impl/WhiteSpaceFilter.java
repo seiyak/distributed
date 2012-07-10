@@ -6,13 +6,13 @@ import java.util.List;
 
 import org.apache.log4j.Logger;
 
-import distributed.filter.AbstractFilter;
+import distributed.filter.AbstractEachFilter;
 import distributed.filter.UnSplitLocalFilter;
 import distributed.filter.helper.MatchRange;
 import distributed.filter.helper.SplitFirstPhase;
 import distributed.filter.helper.SplitSecondPhase;
 
-public class WhiteSpaceFilter extends AbstractFilter<String> {
+public class WhiteSpaceFilter extends AbstractEachFilter<String> {
 
 	private static Logger log = Logger.getLogger( WhiteSpaceFilter.class );
 	private int numberOfFilter;
