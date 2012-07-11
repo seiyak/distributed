@@ -13,8 +13,6 @@ import distributed.input.DistributedInput;
 @Target(ElementType.TYPE)
 public @interface FilterPhase {
 
-	int numberOfFilter() default 1;
-
 	Filter[] filters() default {};
 
 	String[] slaves() default {};
