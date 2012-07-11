@@ -1,4 +1,4 @@
-package distributed.filter.impl;
+package distributed.filter.impl.whitespace;
 
 import static org.junit.Assert.*;
 
@@ -6,6 +6,8 @@ import org.apache.log4j.Logger;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
+
+import distributed.filter.impl.WhiteSpaceFilter;
 
 public class WhiteSpaceFilterTest {
 
@@ -41,7 +43,7 @@ public class WhiteSpaceFilterTest {
 	@Test
 	public void testFilterWithAnnotationSplitTrue() throws Exception {
 
-		FilteredSplitTrue filtered = new FilteredSplitTrue();
+		WhiteSpaceFilteredSplitTrue filtered = new WhiteSpaceFilteredSplitTrue();
 		String[] result = filtered.runFilter();
 		assertNotNull( "expecting result != null but found null", result );
 		assertTrue( "expecting rseult.length == 5 but found " + result.length, result.length == 5 );
@@ -50,7 +52,7 @@ public class WhiteSpaceFilterTest {
 
 	@Test
 	public void testFilerWithAnnotationSplitFalse() throws Exception {
-		FilteredSplitFalse filtered = new FilteredSplitFalse();
+		WhiteSpaceFilteredSplitFalse filtered = new WhiteSpaceFilteredSplitFalse();
 		String[] result = filtered.runFilter();
 		assertNotNull( "expecting result != null but found null", result );
 		assertTrue( "expecting rseult.length == 4 but found " + result.length, result.length == 4 );
