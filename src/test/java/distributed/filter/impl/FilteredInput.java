@@ -5,7 +5,6 @@ import distributed.input.DistributedInput;
 public class FilteredInput implements DistributedInput {
 
 	public Object[] getInput() {
-		return new String[] { "Annotated filter example here." };
+		return new String[] { "Annotated filter example is here." };
 	}
-
 }
