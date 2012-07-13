@@ -107,8 +107,15 @@ public abstract class AbstractEachFilter<T extends Object> implements Filter<T> 
 		String[] result = null;
 
 		if ( ranges.size() == 1 ) {
-			result = new String[1];
-			result[0] = input.substring( 0, ranges.get( 0 ).getStart() );
+			if ( ranges.get( 0 ).getEnd() == ( input.length() - 1 ) ) {
+				result = new String[1];
+				result[0] = input.substring( 0, ranges.get( 0 ).getStart() );
+			}
+			else {
+				result = new String[2];
+				result[0] = input.substring( 0, ranges.get( 0 ).getStart() );
+				result[1] = input.substring( ranges.get( 0 ).getEnd(), input.length() );
+			}
 		}
 		else if ( ranges.size() > 1 ) {
 			result = new String[ranges.size() + 1];
@@ -127,8 +134,12 @@ public abstract class AbstractEachFilter<T extends Object> implements Filter<T> 
 						int newStart = end;
 						int newEnd = end + leftOver;
 
-						System.arraycopy( new SplitSecondPhase( input, newStart, newEnd, ranges ).call(), 0, result,
-								newStart, 1 );
+						do {
+							System.arraycopy( new SplitSecondPhase( input, newStart, newEnd, ranges ).call(), 0,
+									result, newStart, 1 );
+							newStart = newEnd;
+							newEnd = newStart + leftOver;
+						} while ( newStart != ( ranges.size() + 1 ) );
 					}
 				}
 			}
