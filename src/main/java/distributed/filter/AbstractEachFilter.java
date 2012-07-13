@@ -121,10 +121,11 @@ public abstract class AbstractEachFilter<T extends Object> implements Filter<T> 
 			result = new String[ranges.size() + 1];
 			result[0] = input.substring( 0, ranges.get( 0 ).getStart() );
 
-			final int numberOfTasks = ranges.size() / numberOfFilter;
+			final int numberOfTasks = (ranges.size() / numberOfFilter) == 0 ? 1 : (ranges.size() / numberOfFilter);
 			final int leftOver = numberOfTasks % numberOfFilter;
+			final int numberOfLoops = numberOfTasks == 1 ? ranges.size() + 1 : numberOfFilter;
 			int i = 0;
-			for ( i = 1; i < numberOfFilter; i++ ) {
+			for ( i = 1; i < numberOfLoops; i++ ) {
 				int start = i * numberOfTasks;
 				int end = start + numberOfTasks;
 
