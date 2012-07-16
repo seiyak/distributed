@@ -22,7 +22,7 @@ public class MapReduceTest {
 
 	private static Logger log = Logger.getLogger( MapReduceTest.class );
 	private AbstractMapReduce<Map<String, Integer>> mapreduce;
-	private distributed.map.Map map;
+	private distributed.map.Map<String> map;
 	private Reduce<Map<String, Integer>> reduce;
 	private AbstractMapReduce<Map<String,Integer>> mapreduceMap;
 	private AbstractMapReduce<Map<String,Integer>> mapreduceReduce;
@@ -34,7 +34,7 @@ public class MapReduceTest {
 	@Before
 	public void setUp() throws Exception {
 		mapreduce = new MapReduce();
-		map = new distributed.map.Map( null, 3 );
+		map = new distributed.map.Map<String>( null, 3 );
 		reduce = new Reduce<Map<String, Integer>>( null, 5 );
 		mapreduceMap = new MapReduceMap();
 		mapreduceReduce = new MapReduceReduce();

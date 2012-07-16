@@ -8,12 +8,12 @@ import distributed.annotation.processor.MapPhaseProcessor;
 import distributed.input.DistributedInput;
 import distributed.mapreduce.AbstractMapReduce;
 
-public class Map {
+public class Map<I> {
 
 	private final int numberOfMap;
 	private final Object[] values;
 	private Mapper mapper;
-	private DistributedInput mapInput;
+	private DistributedInput<I> mapInput;
 
 	public Map(AbstractMapReduce mapreduce, int numberOfMap) {
 
@@ -31,15 +31,16 @@ public class Map {
 		this.mapper = mapper;
 	}
 
-	public void setMapInput(DistributedInput mapInput) {
+	public void setMapInput(DistributedInput<I> mapInput) {
 		this.mapInput = mapInput;
 	}
 
+	@SuppressWarnings("unchecked")
 	public java.util.Map<String, ArrayList<Object>> runMapPahse() throws Exception {
 
 		if ( values != null ) {
 			mapper = (Mapper) ( (Class) values[0] ).newInstance();
-			mapInput = (DistributedInput) ( (Class) values[1] ).newInstance();
+			mapInput = (DistributedInput<I>) ( (Class) values[1] ).newInstance();
 		}
 
 		checkNullBeforeMapPhase( mapper, mapInput );
@@ -64,7 +65,7 @@ public class Map {
 		return map;
 	}
 
-	private void checkNullBeforeMapPhase(Mapper mapper, DistributedInput mapInput) {
+	private void checkNullBeforeMapPhase(Mapper mapper, DistributedInput<I> mapInput) {
 
 		if ( mapper == null || mapInput == null ) {
 			if ( mapper == null && mapInput != null ) {
@@ -83,13 +84,13 @@ public class Map {
 		}
 	}
 
-	private IntermediateResult[] doMapPhase(final Mapper mapper, final DistributedInput mapInput) throws Exception {
+	private IntermediateResult[] doMapPhase(final Mapper mapper, final DistributedInput<I> mapInput) throws Exception {
 
 		return doMapPhaseLocally( mapper, mapInput );
 		// TODO support distributed map phase
 	}
 
-	private IntermediateResult[] doMapPhaseLocally(final Mapper mapper, final DistributedInput mapInput) throws Exception {
+	private IntermediateResult[] doMapPhaseLocally(final Mapper mapper, final DistributedInput<I> mapInput) throws Exception {
 
 		IntermediateResult[] result = new IntermediateResult[mapInput.getInput().length];
 		final int leftOver = mapInput.getInput().length % numberOfMap;
@@ -100,13 +101,13 @@ public class Map {
 		for ( i = 0; i < numberOfMap; i++ ) {
 			int start = i * numberOfTask;
 			int end = start + numberOfTask;
-			System.arraycopy( new LocalMap( start, end, mapper, mapInput ).call(), 0, result, start, end - start );
+			System.arraycopy( new LocalMap<I>( start, end, mapper, mapInput ).call(), 0, result, start, end - start );
 
 			if ( i == ( numberOfMap - 1 ) && leftOver != 0 ) {
 				if ( leftOver <= numberOfMap ) {
 					int newStart = end;
 					int newEnd = newStart + leftOver;
-					System.arraycopy( new LocalMap( newStart, newEnd, mapper, mapInput ).call(), 0, result, newStart,
+					System.arraycopy( new LocalMap<I>( newStart, newEnd, mapper, mapInput ).call(), 0, result, newStart,
 							newEnd - newStart );
 				}
 			}

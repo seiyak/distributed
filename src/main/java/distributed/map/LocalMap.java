@@ -5,14 +5,14 @@ import java.util.concurrent.Callable;
 
 import distributed.input.DistributedInput;
 
-public class LocalMap implements Callable<IntermediateResult[]> {
+public class LocalMap<I> implements Callable<IntermediateResult[]> {
 
 	private final int start;
 	private final int end;
 	private final Mapper mapper;
-	private final DistributedInput mapInput;
+	private final DistributedInput<I> mapInput;
 
-	public LocalMap(int start, int end, final Mapper mapper, final DistributedInput mapInput) {
+	public LocalMap(int start, int end, final Mapper mapper, final DistributedInput<I> mapInput) {
 		this.start = start;
 		this.end = end;
 		this.mapper = mapper;

@@ -1,6 +1,6 @@
 package distributed.input;
 
-public interface DistributedInput {
+public interface DistributedInput<T> {
 
-	Object[] getInput();
+	T[] getInput();
 }

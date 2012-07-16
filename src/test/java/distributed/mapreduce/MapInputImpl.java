@@ -8,9 +8,9 @@ import java.util.List;
 
 import distributed.input.DistributedInput;
 
-public class MapInputImpl implements DistributedInput {
+public class MapInputImpl implements DistributedInput<String> {
 
-	public Object[] getInput() {
+	public String[] getInput() {
 		
 		BufferedReader br = new BufferedReader(new InputStreamReader(getClass().getClassLoader().getResourceAsStream( "TestInput1" )));
 		String str = "";
