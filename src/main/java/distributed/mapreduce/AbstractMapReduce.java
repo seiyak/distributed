@@ -10,7 +10,7 @@ import distributed.annotation.processor.SetUpProcessor;
 import distributed.record.RecordFormat;
 import distributed.reduce.Reduce;
 
-public abstract class AbstractMapReduce<R extends Map> {
+public abstract class AbstractMapReduce<I, R extends Map> {
 
 	private static Logger log = Logger.getLogger( AbstractMapReduce.class );
 	private final int maxTrial;
@@ -20,7 +20,7 @@ public abstract class AbstractMapReduce<R extends Map> {
 	private final SetUpProcessor setUpProcessor = new SetUpProcessor( this );
 	private static final String JDBC_PREFIX = "jdbc:";
 
-	private final distributed.map.Map mapPhase;
+	private final distributed.map.Map<I> mapPhase;
 	private final Reduce<R> reducePhase;
 
 	protected AbstractMapReduce() {
@@ -30,7 +30,7 @@ public abstract class AbstractMapReduce<R extends Map> {
 			slaves = (String[]) values[3];
 			slaveList = (String) values[4];
 			recordFormat = (String) values[5];
-			mapPhase = new distributed.map.Map( this, (Integer) values[0] );
+			mapPhase = new distributed.map.Map<I>( this, (Integer) values[0] );
 			reducePhase = new Reduce<R>( this, (Integer) values[1] );
 		}
 		else {

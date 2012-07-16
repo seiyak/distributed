@@ -14,7 +14,7 @@ public class Reduce<R extends Map> {
 	private final int numberOfReduce;
 	private Reducer<R> reducer;
 
-	public Reduce(AbstractMapReduce<R> mapreduce, int numberOfReduce) {
+	public Reduce(AbstractMapReduce mapreduce, int numberOfReduce) {
 		
 		if ( mapreduce == null ) {
 			values = null;

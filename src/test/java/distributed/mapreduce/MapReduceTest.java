@@ -21,11 +21,11 @@ import distributed.reduce.Reduce;
 public class MapReduceTest {
 
 	private static Logger log = Logger.getLogger( MapReduceTest.class );
-	private AbstractMapReduce<Map<String, Integer>> mapreduce;
+	private AbstractMapReduce<String, Map<String, Integer>> mapreduce;
 	private distributed.map.Map<String> map;
 	private Reduce<Map<String, Integer>> reduce;
-	private AbstractMapReduce<Map<String,Integer>> mapreduceMap;
-	private AbstractMapReduce<Map<String,Integer>> mapreduceReduce;
+	private AbstractMapReduce<String, Map<String,Integer>> mapreduceMap;
+	private AbstractMapReduce<String, Map<String,Integer>> mapreduceReduce;
 	private static int SHUFFLED_SIZE_FOR_TESTINPUT_1 = 9;
 
 	/**

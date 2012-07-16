@@ -12,7 +12,7 @@ import distributed.record.RecordFormat;
 @SetUp(numberOfMap = 3,numberOfReduce=4,recordFormat=RecordFormat.PLAIN)
 @MapPhase(mapper = MapperImpl.class, mapInput = MapInputImpl.class)
 @ReducePhase(reducer = ReducerImpl.class)
-public class MapReduce extends AbstractMapReduce<Map<String, Integer>> {
+public class MapReduce extends AbstractMapReduce<String, Map<String, Integer>> {
 
 	/**
 	 * @param target
