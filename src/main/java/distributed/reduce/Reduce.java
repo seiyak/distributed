@@ -8,7 +8,7 @@ import org.apache.log4j.Logger;
 import distributed.annotation.processor.ReducePhaseProcessor;
 import distributed.mapreduce.AbstractMapReduce;
 
-public class Reduce<R extends Map> {
+public class Reduce<I, R extends Map> {
 
 	private final Object[] values;
 	private final int numberOfReduce;
@@ -30,7 +30,7 @@ public class Reduce<R extends Map> {
 		this.reducer = reducer;
 	}
 	
-	public R runReducePhase(Map<String, ArrayList<Object>> resultFromMapPhase, R result) throws Exception {
+	public R runReducePhase(Map<String, ArrayList<I>> resultFromMapPhase, R result) throws Exception {
 
 		if(values != null){
 			reducer = (Reducer<R>) ( (Class) values[0] ).newInstance();
@@ -41,7 +41,7 @@ public class Reduce<R extends Map> {
 		return result;
 	}
 
-	private void checkNullBeforeReducePhase(Reducer<R> reducer, Map<String, ArrayList<Object>> reduceInput) {
+	private void checkNullBeforeReducePhase(Reducer<R> reducer, Map<String, ArrayList<I>> reduceInput) {
 
 		if ( reducer == null || reduceInput == null ) {
 			if ( reducer == null && reduceInput != null ) {
@@ -57,14 +57,14 @@ public class Reduce<R extends Map> {
 		}
 	}
 
-	private R doReducePhase(final Reducer<R> reducer, final Map<String, ArrayList<Object>> reduceInput, R result)
+	private R doReducePhase(final Reducer<R> reducer, final Map<String, ArrayList<I>> reduceInput, R result)
 			throws Exception {
 
 		return doReducePhaseLocally( reducer, reduceInput, result );
 		// TODO support distributed reduce phase
 	}
 
-	private R doReducePhaseLocally(final Reducer<R> reducer, final Map<String, ArrayList<Object>> reduceInput, R result)
+	private R doReducePhaseLocally(final Reducer<R> reducer, final Map<String, ArrayList<I>> reduceInput, R result)
 			throws Exception {
 
 		final int numberOfTask = reduceInput.size() / numberOfReduce;
@@ -74,13 +74,13 @@ public class Reduce<R extends Map> {
 		for ( i = 0; i < numberOfReduce; i++ ) {
 			int start = i * numberOfTask;
 			int end = start + numberOfTask;
-			result.putAll( new LocalReduce<R>( start, end, reducer, reduceInput ).call() );
+			result.putAll( new LocalReduce<I, R>( start, end, reducer, reduceInput ).call() );
 
 			if ( i == ( numberOfReduce - 1 ) && leftOver != 0 ) {
 				if ( leftOver <= numberOfReduce ) {
 					int newStart = end;
 					int newEnd = newStart + leftOver;
-					result.putAll( new LocalReduce<R>( newStart, newEnd, reducer, reduceInput ).call() );
+					result.putAll( new LocalReduce<I, R>( newStart, newEnd, reducer, reduceInput ).call() );
 				}
 			}
 		}

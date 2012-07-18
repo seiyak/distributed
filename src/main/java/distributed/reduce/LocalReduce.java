@@ -6,14 +6,14 @@ import java.util.List;
 import java.util.Map;
 import java.util.concurrent.Callable;
 
-public class LocalReduce<R> implements Callable<R> {
+public class LocalReduce<I, R> implements Callable<R> {
 
 	private final int start;
 	private final int end;
 	private final Reducer<R> reducer;
-	private final Map<String, ArrayList<Object>> reduceInput;
+	private final Map<String, ArrayList<I>> reduceInput;
 
-	public LocalReduce(int start, int end, Reducer<R> reducer, Map<String, ArrayList<Object>> reduceInput) {
+	public LocalReduce(int start, int end, Reducer<R> reducer, Map<String, ArrayList<I>> reduceInput) {
 
 		this.start = start;
 		this.end = end;

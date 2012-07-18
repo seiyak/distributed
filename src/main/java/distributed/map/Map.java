@@ -8,7 +8,7 @@ import distributed.annotation.processor.MapPhaseProcessor;
 import distributed.input.DistributedInput;
 import distributed.mapreduce.AbstractMapReduce;
 
-public class Map<I> {
+public class Map<I, IR> {
 
 	private final int numberOfMap;
 	private final Object[] values;
@@ -36,7 +36,7 @@ public class Map<I> {
 	}
 
 	@SuppressWarnings("unchecked")
-	public java.util.Map<String, ArrayList<Object>> runMapPahse() throws Exception {
+	public java.util.Map<String, ArrayList<IR>> runMapPahse() throws Exception {
 
 		if ( values != null ) {
 			mapper = (Mapper) ( (Class) values[0] ).newInstance();
@@ -48,18 +48,19 @@ public class Map<I> {
 		return shuffle( doMapPhase( mapper, mapInput ) );
 	}
 
-	private java.util.Map<String, ArrayList<Object>> shuffle(IntermediateResult[] intermediateResult) {
+	@SuppressWarnings("unchecked")
+	private java.util.Map<String, ArrayList<IR>> shuffle(IntermediateResult[] intermediateResult) {
 
-		ConcurrentMap<String, ArrayList<Object>> map = new ConcurrentHashMap<String, ArrayList<Object>>();
+		ConcurrentMap<String, ArrayList<IR>> map = new ConcurrentHashMap<String, ArrayList<IR>>();
 		// TODO make use of divide and conquer
 		for ( IntermediateResult iResult : intermediateResult ) {
 
 			if ( map.containsKey( iResult.getKey() ) ) {
-				map.get( iResult.getKey() ).add( iResult.getValue() );
+				map.get( iResult.getKey() ).add( (IR) iResult.getValue() );
 			}
 			else if ( !map.containsKey( iResult.getKey() ) ) {
-				map.put( iResult.getKey(), new ArrayList<Object>() );
-				map.get( iResult.getKey() ).add( iResult.getValue() );
+				map.put( iResult.getKey(), new ArrayList<IR>() );
+				map.get( iResult.getKey() ).add( (IR) iResult.getValue() );
 			}
 		}
 		return map;
