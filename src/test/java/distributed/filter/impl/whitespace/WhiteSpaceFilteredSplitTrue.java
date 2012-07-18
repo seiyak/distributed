@@ -8,6 +8,6 @@ import distributed.filter.impl.WhiteSpaceFilter;
 
 @FilterPhase(filters = { @Filter(filterName = "WhiteSpaceFilter", filter = WhiteSpaceFilter.class, arguments = {
 		@Argument(value = "4"), @Argument(value = "true") }) }, input = WhiteSpaceFilteredInput.class)
-public class WhiteSpaceFilteredSplitTrue extends AbstractFilter<String>{
+public class WhiteSpaceFilteredSplitTrue extends AbstractFilter<String, String>{
 
 }

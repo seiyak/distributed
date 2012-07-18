@@ -1,8 +1,8 @@
 package distributed.filter.impl;
 
-import distributed.filter.AbstractEachFilter;
+import distributed.filter.AbstractEachFilterString;
 
-public class NewLineFilter extends AbstractEachFilter<String> {
+public class NewLineFilter extends AbstractEachFilterString {
 
 	private static final String NEWLINE = "\\n";
 

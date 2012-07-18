@@ -14,13 +14,13 @@ import distributed.annotation.processor.SetUpProcessor;
 import distributed.filter.helper.reflect.Reflector;
 import distributed.input.DistributedInput;
 
-public abstract class AbstractFilter<T> {
+public abstract class AbstractFilter<I, R> {
 
 	private final String[] slaves;
 	private final String slaveList;
 	private final FilterObject[] filterObjects;
 	private final Reflector reflector = new Reflector();
-	private final DistributedInput input;
+	private final DistributedInput<I> input;
 
 	public String[] getSlaves() {
 		return slaves;
@@ -34,6 +34,7 @@ public abstract class AbstractFilter<T> {
 		return filterObjects;
 	}
 
+	@SuppressWarnings("unchecked")
 	protected AbstractFilter() {
 		Object[] values = new SetUpProcessor( this ).process();
 		if ( values == null ) {
@@ -42,7 +43,7 @@ public abstract class AbstractFilter<T> {
 			filterObjects = (FilterObject[]) values[0];
 			slaves = (String[]) values[1];
 			slaveList = (String) values[2];
-			input = (DistributedInput) values[3];
+			input = (DistributedInput<I>) values[3];
 		}
 		else {
 			// Override slaves and slaveList from FilterPhase with SetUp annotation.
@@ -50,14 +51,28 @@ public abstract class AbstractFilter<T> {
 			slaveList = (String) values[4];
 			Object[] vals = new FilterPhaseProcessor( this ).process();
 			filterObjects = (FilterObject[]) vals[0];
-			input = (DistributedInput) vals[3];
+			input = (DistributedInput<I>) vals[3];
 		}
 	}
 
-	private Filter<T>[] collectFilters(Map<String, LinkedList<FilterObject>> filters) throws RuntimeException,
+	public R[] runFilter() throws Exception {
+		I[] in = (I[]) input.getInput();
+		R[] result = null;
+		for ( Filter<I, R> filter : collectFilters( mapFiltersByFilterName() ) ) {
+			//result = (I[]) filter.filter( result[0] );
+			
+			//TODO how to deal with multiple filters ?
+			result = (R[]) filter.filter( in );
+		}
+
+		return result;
+	}
+
+	@SuppressWarnings("unchecked")
+	private Filter<I, R>[] collectFilters(Map<String, LinkedList<FilterObject>> filters) throws RuntimeException,
 			InstantiationException, IllegalAccessException, InvocationTargetException, NoSuchMethodException {
 
-		List<Filter<T>> list = new ArrayList<Filter<T>>();
+		List<Filter<I, R>> list = new ArrayList<Filter<I, R>>();
 		FilterObject filterObject = null;
 		for ( Entry<String, LinkedList<FilterObject>> entry : filters.entrySet() ) {
 
@@ -71,7 +86,7 @@ public abstract class AbstractFilter<T> {
 			}
 		}
 
-		return (Filter<T>[]) list.toArray( new Filter[list.size()] );
+		return (Filter<I, R>[]) list.toArray( new Filter[list.size()] );
 	}
 
 	private Map<String, LinkedList<FilterObject>> mapFiltersByFilterName() {
@@ -95,14 +110,5 @@ public abstract class AbstractFilter<T> {
 		}
 
 		return filters;
-	}
-
-	public T[] runFilter() throws Exception {
-		T[] result = (T[]) input.getInput();
-		for ( Filter<T> filter : collectFilters( mapFiltersByFilterName() ) ) {
-			result = (T[]) filter.filter( result[0] );
-		}
-
-		return result;
 	}
 }

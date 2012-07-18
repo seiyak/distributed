@@ -1,8 +1,8 @@
 package distributed.filter.impl;
 
-import distributed.filter.AbstractEachFilter;
+import distributed.filter.AbstractEachFilterString;
 
-public class TabFilter extends AbstractEachFilter<String> {
+public class TabFilter extends AbstractEachFilterString {
 
 	private static final String TAB = "\\t";
 

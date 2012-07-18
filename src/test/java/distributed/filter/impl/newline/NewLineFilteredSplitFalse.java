@@ -8,6 +8,6 @@ import distributed.filter.impl.NewLineFilter;
 
 @FilterPhase(filters = { @Filter(filterName = "NewLineFilter", filter = NewLineFilter.class, arguments = {
 		@Argument(value = "4"), @Argument(value = "false") }) }, input = NewLineFilterInput.class)
-public class NewLineFilteredSplitFalse extends AbstractFilter<String> {
+public class NewLineFilteredSplitFalse extends AbstractFilter<String, String> {
 
 }

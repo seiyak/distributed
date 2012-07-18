@@ -8,6 +8,6 @@ import distributed.annotation.Argument;
 
 @FilterPhase(filters = { @Filter(filterName = "TabFilter", filter = TabFilter.class, arguments = {
 		@Argument(value = "4"), @Argument(value = "true") }) }, input = TabFilteredInput.class)
-public class TabFilteredSplitTrue extends AbstractFilter<String> {
+public class TabFilteredSplitTrue extends AbstractFilter<String, String> {
 
 }

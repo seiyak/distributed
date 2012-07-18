@@ -1,8 +1,8 @@
 package distributed.filter.impl;
 
-import distributed.filter.AbstractEachFilter;
+import distributed.filter.AbstractEachFilterString;
 
-public class WhiteSpaceFilter extends AbstractEachFilter<String> {
+public class WhiteSpaceFilter extends AbstractEachFilterString {
 
 	private static final String WHITE_SPACE = "\\s";
 
