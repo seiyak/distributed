@@ -1,6 +1,6 @@
 package distributed.filter;
 
-public interface Filter<T> {
+public interface Filter<I, R> {
 
-	public T[] filter(T input) throws Exception;
+	public R[] filter(I[] input) throws Exception;
 }

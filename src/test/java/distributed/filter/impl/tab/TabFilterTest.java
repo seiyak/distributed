@@ -23,7 +23,8 @@ public class TabFilterTest {
 	@Test
 	public void testTabFilterWithoutAnnotationSplitTrue() throws Exception {
 
-		String[] filtered = splitTrueTabFilter.filter( "this is a tab	sample" );
+		String[] filtered = splitTrueTabFilter
+				.filter(new String[] { "this is a tab	sample" });
 		assertNotNull( "expecting not null but found null", filtered );
 		assertTrue( "expecting size == 2 but found size == " + filtered.length, filtered.length == 2 );
 		assertEachInStringArray( filtered, "this is a tab", "sample" );
@@ -32,7 +33,8 @@ public class TabFilterTest {
 	@Test
 	public void testTabFilterWithoutAnnotationSplitFalse() throws Exception {
 
-		String[] filtered = splitFalseTabFilter.filter( "this\tis\tanother\ttab sample" );
+		String[] filtered = splitFalseTabFilter
+				.filter(new String[] { "this\tis\tanother\ttab sample" });
 		assertNotNull( "expecting not null but found null", filtered );
 		assertTrue( "expecting size == 3 but found size == " + filtered.length, filtered.length == 3 );
 		assertEachInStringArray( filtered, "\t", "\t", "\t" );

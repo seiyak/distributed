@@ -24,7 +24,8 @@ public class WhiteSpaceFilterTest {
 	@Test
 	public void testFilterWithoutAnnotationSplitTrue() throws Exception {
 
-		String[] filtered = (String[]) splitTrueSpaceFilter.filter( "this is a sample input." );
+		String[] filtered = (String[]) splitTrueSpaceFilter
+				.filter(new String[] { "this is a sample input." });
 
 		assertNotNull( "expecting not null but found null", filtered );
 		assertTrue( "expecting size == 5 but found size == " + filtered.length, filtered.length == 5 );
@@ -33,7 +34,9 @@ public class WhiteSpaceFilterTest {
 
 	@Test
 	public void testFilterWithoutAnnotationSplitFalse() throws Exception {
-		String[] filtered = (String[]) splitFalseSpaceFilter.filter( "this is a sample input." );
+
+		String[] filtered = (String[]) splitFalseSpaceFilter
+				.filter(new String[] { "this is a sample input." });
 
 		assertNotNull( "expecting not null but found null", filtered );
 		assertTrue( "expecting size == 4 but found size == " + filtered.length, filtered.length == 4 );

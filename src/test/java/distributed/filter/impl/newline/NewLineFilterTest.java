@@ -23,7 +23,7 @@ public class NewLineFilterTest {
 	public void testNewLineFilterWithoutAnnotationSplitTrue() throws Exception {
 
 		String[] filtered = splitTrueNewLineFilter
-				.filter( "first\nsecond\nthird\nfourth\nfifth\nsixth\nseventh\nandeighth" );
+				.filter(new String[] { "first\nsecond\nthird\nfourth\nfifth\nsixth\nseventh\nandeighth" });
 
 		assertNotNull( "expecting not nul; but found null", filtered );
 		assertTrue( "expecting size == 8 but found size == " + filtered.length, filtered.length == 8 );
@@ -34,7 +34,8 @@ public class NewLineFilterTest {
 	@Test
 	public void testNewLineFilterWithoutAnnotationSplitFalse() throws Exception {
 
-		String[] filtered = splitFalseNewLineFilter.filter( "this\nis\nanother\ninput" );
+		String[] filtered = splitFalseNewLineFilter
+				.filter(new String[] { "this\nis\nanother\ninput" });
 
 		assertNotNull( "expecting not null but found null", filtered );
 		assertTrue( "expecting size == 3 but found size == " + filtered.length, filtered.length == 3 );
