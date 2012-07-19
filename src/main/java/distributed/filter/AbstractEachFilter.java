@@ -13,9 +13,4 @@ public abstract class AbstractEachFilter<I, R> implements Filter<I, R> {
 		this.split = split;
 		this.numberOfFilter = numberOfFilter;
 	}
-
-	public R[] filter(I[] input) throws Exception {
-		return null;
-
-	}
 }
