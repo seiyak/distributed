@@ -2,6 +2,8 @@ package distributed.filter.impl.whitespace;
 
 import static org.junit.Assert.*;
 
+import java.util.List;
+
 import org.apache.log4j.Logger;
 import org.junit.After;
 import org.junit.Before;
@@ -24,8 +26,9 @@ public class WhiteSpaceFilterTest {
 	@Test
 	public void testFilterWithoutAnnotationSplitTrue() throws Exception {
 
-		String[] filtered = (String[]) splitTrueSpaceFilter
+		List<String> result = splitTrueSpaceFilter
 				.filter(new String[] { "this is a sample input." });
+		String[] filtered = result.toArray(new String[result.size()]);
 
 		assertNotNull( "expecting not null but found null", filtered );
 		assertTrue( "expecting size == 5 but found size == " + filtered.length, filtered.length == 5 );
@@ -35,8 +38,9 @@ public class WhiteSpaceFilterTest {
 	@Test
 	public void testFilterWithoutAnnotationSplitFalse() throws Exception {
 
-		String[] filtered = (String[]) splitFalseSpaceFilter
+		List<String> result = splitFalseSpaceFilter
 				.filter(new String[] { "this is a sample input." });
+		String[] filtered = result.toArray(new String[result.size()]);
 
 		assertNotNull( "expecting not null but found null", filtered );
 		assertTrue( "expecting size == 4 but found size == " + filtered.length, filtered.length == 4 );
@@ -47,7 +51,9 @@ public class WhiteSpaceFilterTest {
 	public void testFilterWithAnnotationSplitTrue() throws Exception {
 
 		WhiteSpaceFilteredSplitTrue filtered = new WhiteSpaceFilteredSplitTrue();
-		String[] result = filtered.runFilter();
+		List<String> resultList = filtered.runFilter();
+		String[] result = resultList.toArray(new String[resultList.size()]);
+
 		assertNotNull( "expecting result != null but found null", result );
 		assertTrue( "expecting rseult.length == 5 but found " + result.length, result.length == 5 );
 		assertEachInStringArray( result, "Annotated", "filter", "example", "is", "here." );
@@ -56,7 +62,9 @@ public class WhiteSpaceFilterTest {
 	@Test
 	public void testFilerWithAnnotationSplitFalse() throws Exception {
 		WhiteSpaceFilteredSplitFalse filtered = new WhiteSpaceFilteredSplitFalse();
-		String[] result = filtered.runFilter();
+		List<String> resultList = filtered.runFilter();
+		String[] result = resultList.toArray(new String[resultList.size()]);
+
 		assertNotNull( "expecting result != null but found null", result );
 		assertTrue( "expecting rseult.length == 4 but found " + result.length, result.length == 4 );
 		assertEachInStringArray( result, " ", " ", " ", " " );

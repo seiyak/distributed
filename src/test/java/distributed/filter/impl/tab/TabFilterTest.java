@@ -2,6 +2,8 @@ package distributed.filter.impl.tab;
 
 import static org.junit.Assert.*;
 
+import java.util.List;
+
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
@@ -23,8 +25,10 @@ public class TabFilterTest {
 	@Test
 	public void testTabFilterWithoutAnnotationSplitTrue() throws Exception {
 
-		String[] filtered = splitTrueTabFilter
+		List<String> result = splitTrueTabFilter
 				.filter(new String[] { "this is a tab	sample" });
+		String[] filtered = result.toArray(new String[result.size()]);
+
 		assertNotNull( "expecting not null but found null", filtered );
 		assertTrue( "expecting size == 2 but found size == " + filtered.length, filtered.length == 2 );
 		assertEachInStringArray( filtered, "this is a tab", "sample" );
@@ -33,8 +37,10 @@ public class TabFilterTest {
 	@Test
 	public void testTabFilterWithoutAnnotationSplitFalse() throws Exception {
 
-		String[] filtered = splitFalseTabFilter
+		List<String> result = splitFalseTabFilter
 				.filter(new String[] { "this\tis\tanother\ttab sample" });
+		String[] filtered = result.toArray(new String[result.size()]);
+
 		assertNotNull( "expecting not null but found null", filtered );
 		assertTrue( "expecting size == 3 but found size == " + filtered.length, filtered.length == 3 );
 		assertEachInStringArray( filtered, "\t", "\t", "\t" );
@@ -44,7 +50,8 @@ public class TabFilterTest {
 	public void testTabFilterWithAnnotationSplitTrue() throws Exception {
 
 		TabFilteredSplitTrue filtered = new TabFilteredSplitTrue();
-		String[] result = filtered.runFilter();
+		List<String> resultList = filtered.runFilter();
+		String[] result = resultList.toArray(new String[resultList.size()]);
 
 		assertNotNull( "expecting result != null but found null", result );
 		assertTrue( "expecting result.length == 6 but found " + result.length, result.length == 6 );
@@ -53,8 +60,10 @@ public class TabFilterTest {
 	
 	@Test
 	public void testTabFilterWithAnnotationSplitFalse() throws Exception {
+
 		TabFilteredSplitFalse filtered = new TabFilteredSplitFalse();
-		String[] result = filtered.runFilter();
+		List<String> resultList = filtered.runFilter();
+		String[] result = resultList.toArray(new String[resultList.size()]);
 
 		assertNotNull( "expecting result != null but found null", result );
 		assertTrue( "expecting result.length == 5 but found " + result.length, result.length == 5 );

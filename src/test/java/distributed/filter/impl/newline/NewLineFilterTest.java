@@ -2,6 +2,8 @@ package distributed.filter.impl.newline;
 
 import static org.junit.Assert.*;
 
+import java.util.List;
+
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
@@ -22,8 +24,9 @@ public class NewLineFilterTest {
 	@Test
 	public void testNewLineFilterWithoutAnnotationSplitTrue() throws Exception {
 
-		String[] filtered = splitTrueNewLineFilter
+		List<String> result = splitTrueNewLineFilter
 				.filter(new String[] { "first\nsecond\nthird\nfourth\nfifth\nsixth\nseventh\nandeighth" });
+		String[] filtered = result.toArray(new String[result.size()]);
 
 		assertNotNull( "expecting not nul; but found null", filtered );
 		assertTrue( "expecting size == 8 but found size == " + filtered.length, filtered.length == 8 );
@@ -34,8 +37,9 @@ public class NewLineFilterTest {
 	@Test
 	public void testNewLineFilterWithoutAnnotationSplitFalse() throws Exception {
 
-		String[] filtered = splitFalseNewLineFilter
+		List<String> result = splitFalseNewLineFilter
 				.filter(new String[] { "this\nis\nanother\ninput" });
+		String[] filtered = result.toArray(new String[result.size()]);
 
 		assertNotNull( "expecting not null but found null", filtered );
 		assertTrue( "expecting size == 3 but found size == " + filtered.length, filtered.length == 3 );
@@ -46,7 +50,8 @@ public class NewLineFilterTest {
 	public void testNewLineFilterWithAnnotationSplitTrue() throws Exception {
 
 		NewLineFilteredSplitTrue filtered = new NewLineFilteredSplitTrue();
-		String[] result = filtered.runFilter();
+		List<String> resultList = filtered.runFilter();
+		String[] result = resultList.toArray(new String[resultList.size()]);
 
 		assertNotNull( "expecting not null but found null", result );
 		assertTrue( "expecting result.length == 3 but found " + result.length, result.length == 3 );
@@ -57,8 +62,8 @@ public class NewLineFilterTest {
 	public void testNewLineFilterWithAnnotationSplitFalse() throws Exception {
 
 		NewLineFilteredSplitFalse filtered = new NewLineFilteredSplitFalse();
-
-		String[] result = filtered.runFilter();
+		List<String> resultList = filtered.runFilter();
+		String[] result = resultList.toArray(new String[resultList.size()]);
 
 		assertNotNull( "expecting result != null but found null", result );
 		assertTrue( "expecing result.length == 2 but found " + result.length, result.length == 2 );

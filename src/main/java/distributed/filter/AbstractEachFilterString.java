@@ -1,6 +1,7 @@
 package distributed.filter;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 
@@ -16,10 +17,9 @@ public abstract class AbstractEachFilterString extends
 		super(patternStr, split, numberOfFilter);
 	}
 
-	@Override
-	public String[] filter(String[] input) throws Exception {
+	public List<String> filter(String[] input) throws Exception {
 
-		String[] result = null;
+		List<String> result = null;
 		for (String str : input) {
 			result = doFilter(str);
 		}
@@ -27,7 +27,8 @@ public abstract class AbstractEachFilterString extends
 		return result;
 	}
 
-	private String[] doFilter(String input) throws Exception {
+	@SuppressWarnings("unchecked")
+	private List<String> doFilter(String input) throws Exception {
 
 		if (input == null) {
 			throw new IllegalArgumentException(
@@ -35,7 +36,7 @@ public abstract class AbstractEachFilterString extends
 		}
 
 		if (input.equals("")) {
-			return new String[] {};
+			return Collections.EMPTY_LIST;
 		}
 
 		List<String> l = Collections.synchronizedList(new ArrayList<String>());
@@ -43,7 +44,7 @@ public abstract class AbstractEachFilterString extends
 		final int leftOver = input.length() % numberOfFilter;
 
 		if (split) {
-			return split(input, numberOfTask, leftOver, l);
+			return Arrays.asList(split(input, numberOfTask, leftOver, l));
 		} else {
 			int i = 0;
 			for (i = 0; i < numberOfFilter; i++) {
@@ -68,7 +69,7 @@ public abstract class AbstractEachFilterString extends
 			}
 		}
 
-		return l.toArray(new String[l.size()]);
+		return l;
 	}
 
 	private String[] split(String input, final int numberOfTask,

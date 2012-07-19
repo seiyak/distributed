@@ -55,14 +55,14 @@ public abstract class AbstractFilter<I, R> {
 		}
 	}
 
-	public R[] runFilter() throws Exception {
+	public List<R> runFilter() throws Exception {
 		I[] in = (I[]) input.getInput();
-		R[] result = null;
+		List<R> result = null;
 		for ( Filter<I, R> filter : collectFilters( mapFiltersByFilterName() ) ) {
 			//result = (I[]) filter.filter( result[0] );
 			
 			//TODO how to deal with multiple filters ?
-			result = (R[]) filter.filter( in );
+			result = filter.filter( in );
 		}
 
 		return result;
