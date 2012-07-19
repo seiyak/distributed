@@ -27,7 +27,7 @@ public class SplitSecondPhase implements Callable {
 					.substring( ( ranges.get( start ).getStart() + 1 ), ranges.get( end ).getStart() ) };
 		}
 		catch ( IndexOutOfBoundsException ex ) {
-			log.error( ex );
+			log.info( ex );
 			return new String[] { input.substring( ( ranges.get( start ).getStart() + 1 ), input.length() ) };
 		}
 	}
