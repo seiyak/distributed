@@ -3,7 +3,7 @@ package distributed.filter;
 import distributed.filter.pattern.FilterPattern;
 
 public abstract class AbstractEachFilter<I, R> implements Filter<I, R> {
-	
+
 	protected final distributed.filter.pattern.FilterPattern filterPattern;
 	protected final boolean split;
 	protected final int numberOfFilter;
@@ -13,7 +13,7 @@ public abstract class AbstractEachFilter<I, R> implements Filter<I, R> {
 		this.split = split;
 		this.numberOfFilter = numberOfFilter;
 	}
-	
+
 	public R[] filter(I[] input) throws Exception {
 		return null;
 
