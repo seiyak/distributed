@@ -11,7 +11,11 @@ public class FilterPattern implements FilterPatternFinder {
 	private final java.util.regex.Pattern pattern;
 
 	public FilterPattern(String patternStr) {
-		pattern = java.util.regex.Pattern.compile( patternStr );
+		if (patternStr == null || patternStr.equals("")) {
+			pattern = null;
+		} else {
+			pattern = java.util.regex.Pattern.compile(patternStr);
+		}
 	}
 
 	public String[] find(String str) {
