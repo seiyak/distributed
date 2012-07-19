@@ -128,7 +128,7 @@ public abstract class AbstractEachFilterString extends
 				result[1] = input.substring(ranges.get(0).getEnd(),
 						input.length());
 			}
-		} else if (ranges.size() > 1) {
+		} else if (numberOfFilter > 1 && ranges.size() > 1) {
 			result = new String[ranges.size() + 1];
 			result[0] = input.substring(0, ranges.get(0).getStart());
 
@@ -160,6 +160,8 @@ public abstract class AbstractEachFilterString extends
 					}
 				}
 			}
+		} else if (numberOfFilter == 1 && ranges.size() > 1) {
+			result = input.split(filterPattern.getPattern());
 		}
 
 		return result;
