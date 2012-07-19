@@ -17,8 +17,8 @@ public class WhiteSpaceFilterTest {
 
 	@Before
 	public void setUp() throws Exception {
-		splitTrueSpaceFilter = new WhiteSpaceFilter( Runtime.getRuntime().availableProcessors(), true );
-		splitFalseSpaceFilter = new WhiteSpaceFilter( Runtime.getRuntime().availableProcessors(), false );
+		splitTrueSpaceFilter = new WhiteSpaceFilter( true, Runtime.getRuntime().availableProcessors() );
+		splitFalseSpaceFilter = new WhiteSpaceFilter( false, Runtime.getRuntime().availableProcessors() );
 	}
 
 	@Test

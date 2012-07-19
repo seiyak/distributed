@@ -15,8 +15,8 @@ public class NewLineFilterTest {
 
 	@Before
 	public void setUp() throws Exception {
-		splitTrueNewLineFilter = new NewLineFilter( Runtime.getRuntime().availableProcessors(), true );
-		splitFalseNewLineFilter = new NewLineFilter( Runtime.getRuntime().availableProcessors(), false );
+		splitTrueNewLineFilter = new NewLineFilter( true, Runtime.getRuntime().availableProcessors() );
+		splitFalseNewLineFilter = new NewLineFilter( false, Runtime.getRuntime().availableProcessors() );
 	}
 
 	@Test

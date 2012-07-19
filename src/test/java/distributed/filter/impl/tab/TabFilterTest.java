@@ -16,8 +16,8 @@ public class TabFilterTest {
 	@Before
 	public void setUp() throws Exception {
 
-		splitTrueTabFilter = new TabFilter( Runtime.getRuntime().availableProcessors(), true );
-		splitFalseTabFilter = new TabFilter( Runtime.getRuntime().availableProcessors(), false );
+		splitTrueTabFilter = new TabFilter( true, Runtime.getRuntime().availableProcessors() );
+		splitFalseTabFilter = new TabFilter( false, Runtime.getRuntime().availableProcessors() );
 	}
 
 	@Test

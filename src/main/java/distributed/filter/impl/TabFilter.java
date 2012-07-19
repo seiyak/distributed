@@ -6,7 +6,7 @@ public class TabFilter extends AbstractEachFilterString {
 
 	private static final String TAB = "\\t";
 
-	public TabFilter(int numberOfFilter, boolean split) {
+	public TabFilter(boolean split, int numberOfFilter) {
 		super( TAB, split, numberOfFilter );
 	}
 

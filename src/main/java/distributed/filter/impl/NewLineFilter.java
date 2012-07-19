@@ -6,7 +6,7 @@ public class NewLineFilter extends AbstractEachFilterString {
 
 	private static final String NEWLINE = "\\n";
 
-	public NewLineFilter(int numberOfFilter, boolean split) {
+	public NewLineFilter(boolean split, int numberOfFilter) {
 		super( NEWLINE, split, numberOfFilter );
 	}
 }

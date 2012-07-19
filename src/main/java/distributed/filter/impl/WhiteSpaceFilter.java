@@ -6,7 +6,7 @@ public class WhiteSpaceFilter extends AbstractEachFilterString {
 
 	private static final String WHITE_SPACE = "\\s";
 
-	public WhiteSpaceFilter(int numberOfFilter, boolean split) {
+	public WhiteSpaceFilter(boolean split, int numberOfFilter) {
 		super( WHITE_SPACE, split, numberOfFilter );
 	}
 }

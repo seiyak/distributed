@@ -7,7 +7,7 @@ import distributed.filter.AbstractFilter;
 import distributed.filter.impl.WhiteSpaceFilter;
 
 @FilterPhase(filters = { @Filter(filterName = "WhiteSpaceFilter", filter = WhiteSpaceFilter.class, arguments = {
-		@Argument(value = "4"), @Argument(value = "true") }) }, input = WhiteSpaceFilteredInput.class)
+		@Argument(value = "true"), @Argument(value = "4") }) }, input = WhiteSpaceFilteredInput.class)
 public class WhiteSpaceFilteredSplitTrue extends AbstractFilter<String, String>{
 
 }
