@@ -3,6 +3,7 @@ package distributed.filter.impl.equal;
 import static org.junit.Assert.*;
 
 import java.lang.reflect.InvocationTargetException;
+import java.util.List;
 
 import org.junit.Before;
 import org.junit.Test;
@@ -40,6 +41,20 @@ public class EqualFilterTest {
 	}
 
 	@Test
+	public void testEqualFilterWithAnnotationInteger() throws Exception {
+
+		EqualFilteredInt filtered = new EqualFilteredInt();
+		List<Integer> resultList = filtered.runFilter();
+		Integer[] result = resultList.toArray( new Integer[resultList.size()] );
+		Integer[] expected = { 1, 1, 1, 1, 1 };
+
+		assertNotNull( "expecting not null but found null", result );
+		assertTrue( "expecting result.length == 5 but found " + result.length,
+				result.length == 5 );
+		assertEachElement( expected, result );
+	}
+	
+	@Test
 	public void testEqualFilterWithoutAnnotationDouble() throws Exception {
 
 		Double[] doubles = { 1.0, 3.0, 2.1, 53.1 };
@@ -49,6 +64,19 @@ public class EqualFilterTest {
 				expected,
 				equalFilterDouble.filter(doubles).toArray(
 						new Double[expected.length]));
+	}
+
+	@Test
+	public void testEqualFilterWithAnnotationDouble() throws Exception {
+		EqualFilteredDouble filtered = new EqualFilteredDouble();
+		List<Double> resultList = filtered.runFilter();
+		Double[] result = resultList.toArray( new Double[resultList.size()] );
+		Double[] expected = {};
+
+		assertNotNull( "expecting not null but found null", result );
+		assertTrue( "expecting result.length == 0 but found " + result.length,
+				result.length == 0 );
+		assertEachElement( expected, result );
 	}
 
 	@Test
@@ -65,6 +93,20 @@ public class EqualFilterTest {
 	}
 
 	@Test
+	public void testEqualFilterWithAnnotationFloat() throws Exception {
+
+		EqualFilteredFloat filtered = new EqualFilteredFloat();
+		List<Float> resultList = filtered.runFilter();
+		Float[] result = resultList.toArray(new Float[resultList.size()]);
+		Float[] expected = { (float) 0.001, (float) 0.001, (float) 0.001 };
+
+		assertNotNull("expecting not null but found null", result);
+		assertTrue("expecting result.length == 3 but found " + result.length,
+				result.length == 3);
+		assertEachElement(expected, result);
+	}
+
+	@Test
 	public void testEqualFilterWithoutAnnotationBoolean() throws Exception {
 
 		Boolean[] booleans = { false, true, false, true, false, true, false,
@@ -73,6 +115,20 @@ public class EqualFilterTest {
 
 		assertEachElement(expected, equalFilterBoolean.filter(booleans)
 				.toArray(new Boolean[expected.length]));
+	}
+
+	@Test
+	public void testEqualFilterWithAnnotationBoolean() throws Exception {
+
+		EqualFilteredBoolean filtered = new EqualFilteredBoolean();
+		List<Boolean> resultList = filtered.runFilter();
+		Boolean[] result = resultList.toArray(new Boolean[resultList.size()]);
+		Boolean[] expected = { false, false, false, false, false, false };
+
+		assertNotNull("expecting not null but found null", result);
+		assertTrue("expecting result.length == 6 but found " + result.length,
+				result.length == 6);
+		assertEachElement(expected, result);
 	}
 
 	@Test(expected = IllegalArgumentException.class)
