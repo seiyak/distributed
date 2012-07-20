@@ -5,6 +5,7 @@ import java.lang.reflect.InvocationTargetException;
 
 import distributed.annotation.object.FilterObject;
 import distributed.filter.Filter;
+import distributed.input.DistributedInput;
 
 public final class Reflector<T> {
 
@@ -22,6 +23,8 @@ public final class Reflector<T> {
 	private static final String WRAPPER_DOUBLE = "Double";
 	private static final String WRAPPER_BOOLEAN = "Boolean";
 	private static final String COMPARETO = "compareTo";
+	private static final String GETINPUT = "getInput";
+	private static final String OBJECT = "java.lang.Object";
 
 	public Filter instantiateFilter(FilterObject filterObject) throws RuntimeException, InstantiationException,
 			IllegalAccessException, InvocationTargetException, NoSuchMethodException {
@@ -30,20 +33,20 @@ public final class Reflector<T> {
 		Object[] parameters = new Object[filterObject.getArguments().length];
 		Class[] parameterClasses = new Class[filterObject.getArguments().length];
 		for ( int i = 0; i < constructor.getParameterTypes().length; i++ ) {
-			parameters[i] = parseArgument( constructor.getParameterTypes()[i].getName(), filterObject.getArguments()[i] );
+			parameters[i] = parseArgument( constructor.getParameterTypes()[i].getName(), filterObject.getArguments()[i], filterObject.getInputType() );
 
 			if ( constructor.getParameterTypes()[i].isPrimitive() ) {
 				parameterClasses[i] = getPrimitiveType( parameters[i].getClass().getSimpleName() );
 			}
 			else {
-				parameterClasses[i] = parameters[i].getClass();
+				parameterClasses[i] = Object.class;//parameters[i].getClass();
 			}
 		}
 
 		return filterObject.getFilter().getDeclaredConstructor( parameterClasses ).newInstance( parameters );
 	}
 
-	public Object parseArgument(String primitiveType, String argument) {
+	public Object parseArgument(String primitiveType, String argument, Class guessedArgumentType) throws InstantiationException, IllegalAccessException, IllegalArgumentException, SecurityException, InvocationTargetException, NoSuchMethodException {
 
 		if ( primitiveType.equals( PRIMITIVE_SHORT ) ) {
 			return Short.parseShort( argument );
@@ -65,6 +68,9 @@ public final class Reflector<T> {
 		}
 		else if ( primitiveType.equals( STRING ) ) {
 			return argument;
+		}
+		else if ( primitiveType.equals( OBJECT ) ){
+			return guessedArgumentType.getConstructor( String.class ).newInstance( argument );
 		}
 
 		throw new IllegalArgumentException( "could not find the specified primitive type, " + primitiveType );
@@ -117,5 +123,12 @@ public final class Reflector<T> {
 		return (Integer) src.getClass()
 				.getDeclaredMethod(COMPARETO, src.getClass())
 				.invoke(src, compared);
+	}
+
+	public Class guessFilterArgumentType(Class<? extends DistributedInput> cls)
+			throws SecurityException, NoSuchMethodException {
+
+		return cls.getDeclaredMethod(GETINPUT).getReturnType()
+				.getComponentType();
 	}
 }
