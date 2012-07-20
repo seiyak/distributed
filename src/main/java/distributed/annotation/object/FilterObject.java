@@ -5,11 +5,13 @@ public class FilterObject {
 	private final String filerName;
 	private final Class<? extends distributed.filter.Filter> filter;
 	private final String[] arguments;
+	private final Class inputType;
 
-	public FilterObject(String filterName, Class<? extends distributed.filter.Filter> filter, String[] arguments) {
+	public FilterObject(String filterName, Class<? extends distributed.filter.Filter> filter, String[] arguments, Class inputType) {
 		this.filerName = filterName;
 		this.filter = filter;
 		this.arguments = arguments;
+		this.inputType = inputType;
 	}
 
 	/**
@@ -31,5 +33,9 @@ public class FilterObject {
 	 */
 	public String[] getArguments() {
 		return arguments;
+	}
+
+	public Class getInputType() {
+		return inputType;
 	}
 }

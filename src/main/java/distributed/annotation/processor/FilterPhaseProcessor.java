@@ -23,7 +23,16 @@ public class FilterPhaseProcessor extends AbstractProcessor {
 		FilterPhase filterPhase = (FilterPhase) an;
 
 		Object[] values = new Object[4];
-		values[0] = filterProcessor.process( filterPhase.filters() );
+		try {
+			values[0] = filterProcessor.process( filterPhase.filters(), filterPhase.input() );
+		} catch (SecurityException e1) {
+			// TODO Auto-generated catch block
+			e1.printStackTrace();
+		} catch (NoSuchMethodException e1) {
+			// TODO Auto-generated catch block
+			e1.printStackTrace();
+		}
+
 		values[1] = filterPhase.slaves();
 		values[2] = filterPhase.slaveList();
 		try {
