@@ -6,7 +6,7 @@ import java.lang.reflect.InvocationTargetException;
 import distributed.annotation.object.FilterObject;
 import distributed.filter.Filter;
 
-public final class Reflector {
+public final class Reflector<T> {
 
 	private static final String PRIMITIVE_SHORT = "short";
 	private static final String PRIMITIVE_INT = "int";
@@ -21,6 +21,7 @@ public final class Reflector {
 	private static final String WRAPPER_FLOAT = "Float";
 	private static final String WRAPPER_DOUBLE = "Double";
 	private static final String WRAPPER_BOOLEAN = "Boolean";
+	private static final String COMPARETO = "compareTo";
 
 	public Filter instantiateFilter(FilterObject filterObject) throws RuntimeException, InstantiationException,
 			IllegalAccessException, InvocationTargetException, NoSuchMethodException {
@@ -106,5 +107,15 @@ public final class Reflector {
 
 		throw new IllegalArgumentException( "could not find any constructor whose parameters' size is "
 				+ filterObject.getArguments().length + " for class, " + filterObject.getFilter().getName() );
+	}
+
+	@SuppressWarnings("unchecked")
+	public int compareTo(T src, T compared) throws IllegalArgumentException,
+			SecurityException, IllegalAccessException,
+			InvocationTargetException, NoSuchMethodException {
+
+		return (Integer) src.getClass()
+				.getDeclaredMethod(COMPARETO, src.getClass())
+				.invoke(src, compared);
 	}
 }
