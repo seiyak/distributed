@@ -131,4 +131,13 @@ public final class Reflector<T> {
 		return cls.getDeclaredMethod(GETINPUT).getReturnType()
 				.getComponentType();
 	}
+
+	public boolean isBoolean(T obj) {
+
+		if ( obj.getClass().getSimpleName().equals( WRAPPER_BOOLEAN ) ) {
+			return true;
+		}
+
+		return false;
+	}
 }
