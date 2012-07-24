@@ -89,7 +89,7 @@ public class BetweenFilterTest {
 		Float[] result = resultList.toArray( new Float[resultList.size()] );
 		Float[] expected = { (float) 0.01 };
 
-		assertNotNull( "expecting not null nut found null", result );
+		assertNotNull( "expecting not null but found null", result );
 		assertTrue( "expecting result.length == 1 but found " + result.length, result.length == 1 );
 		assertEachElement( expected, result );
 	}
