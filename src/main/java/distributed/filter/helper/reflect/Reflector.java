@@ -2,6 +2,8 @@ package distributed.filter.helper.reflect;
 
 import java.lang.reflect.Constructor;
 import java.lang.reflect.InvocationTargetException;
+import java.util.ArrayList;
+import java.util.List;
 
 import distributed.annotation.object.FilterObject;
 import distributed.filter.Filter;
@@ -16,6 +18,7 @@ public final class Reflector<T> {
 	private static final String PRIMITIVE_DOUBLE = "double";
 	private static final String PRIMITIVE_BOOLEAN = "boolean";
 	private static final String STRING = "String";
+	private static final String CHARACTER = "Character";
 	private static final String WRAPPER_SHORT = "Short";
 	private static final String WRAPPER_INT = "Integer";
 	private static final String WRAPPER_LONG = "Long";
@@ -128,7 +131,7 @@ public final class Reflector<T> {
 	public Class guessFilterArgumentType(Class<? extends DistributedInput> cls)
 			throws SecurityException, NoSuchMethodException {
 
-		return cls.getDeclaredMethod(GETINPUT).getReturnType()
+		return cls.getDeclaredMethod( GETINPUT ).getReturnType()
 				.getComponentType();
 	}
 
@@ -139,5 +142,44 @@ public final class Reflector<T> {
 		}
 
 		return false;
+	}
+
+	public <O> List<O> castFrom(List<T> from, O to) throws IllegalAccessException, IllegalArgumentException,
+			InvocationTargetException, NoSuchMethodException, SecurityException {
+
+		if ( isCharacterClass( to.getClass() ) ) {
+			throw new IllegalArgumentException( "Character class as output is not supported yet." );
+		}
+
+		List<O> result = new ArrayList<O>();
+		String parseMethodName = getParseMethodName( to.getClass() );
+
+		for ( T t : from ) {
+			result.add( (O) to.getClass().getMethod( parseMethodName, t.getClass() ).invoke( to, t ) );
+		}
+
+		return result;
+	}
+
+	private boolean isCharacterClass(Class cls) {
+
+		if ( cls.getSimpleName().equals( CHARACTER ) ) {
+			return true;
+		}
+
+		return false;
+	}
+
+	private String getParseMethodName(Class to) {
+
+		return "parse" + makeFirstLetterUpper( getPrimitiveType( to.getSimpleName() ).getSimpleName() );
+	}
+
+	private String makeFirstLetterUpper(String primitiveTypeName) {
+
+		StringBuilder builder = new StringBuilder( primitiveTypeName );
+		builder.setCharAt( 0, Character.toUpperCase( primitiveTypeName.charAt( 0 ) ) );
+
+		return builder.toString();
 	}
 }
