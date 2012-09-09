@@ -30,6 +30,12 @@ public class IntegerFilterTest {
 
 		res = integerFilter.filter( new String[] { "they had 20 cookies and 5 cokes and also 1000 pizzas" } );
 		checkEachElement( res, new int[] { 20, 5, 1000 } );
+
+		res = integerFilter.filter( new String[] {} );
+		checkEachElement( res, new int[] {} );
+
+		res = integerFilter.filter( new String[] { "There are no numbers in this sentence." } );
+		checkEachElement( res, new int[] {} );
 	}
 
 	@Test
