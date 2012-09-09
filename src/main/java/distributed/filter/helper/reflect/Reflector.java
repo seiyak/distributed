@@ -154,8 +154,10 @@ public final class Reflector<T> {
 		List<O> result = new ArrayList<O>();
 		String parseMethodName = getParseMethodName( to.getClass() );
 
-		for ( T t : from ) {
-			result.add( (O) to.getClass().getMethod( parseMethodName, t.getClass() ).invoke( to, t ) );
+		if ( from != null ) {
+			for ( T t : from ) {
+				result.add( (O) to.getClass().getMethod( parseMethodName, t.getClass() ).invoke( to, t ) );
+			}
 		}
 
 		return result;
