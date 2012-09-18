@@ -23,11 +23,9 @@ public class UnSplitLocalFilter<T extends List> implements Callable<T> {
 	}
 
 	public T call() throws Exception {
-
-		String subStr = input.substring( start, end );
-		String[] each = null;
-
-		each = pattern.find( subStr );
+		
+		String subStr = input.substring( start, pattern.getTerminateCharacterIndexFrom( input, end ) );
+		String[] each = pattern.find( subStr );
 		for ( String eachFound : each ) {
 			output.add( eachFound );
 		}

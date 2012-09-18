@@ -25,8 +25,8 @@ public class SplitFirstPhase<T extends List> implements Callable<T> {
 	}
 
 	public T call() throws Exception {
-
-		String str = input.substring( start, end );
+		
+		String str = input.substring( start, filterPattern.getTerminateCharacterIndexFrom( input, end ) );
 		List<MatchRange> ranges = filterPattern.getMatchRange( str, start );
 		if ( !ranges.isEmpty() ) {
 			output.addAll( ranges );
